@@ -127,4 +127,3 @@ const infoCreator = (data) => {
 */
 
 //kodlar buraya gelecek
-cardUret();
