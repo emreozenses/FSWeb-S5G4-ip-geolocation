@@ -1,4 +1,5 @@
 //axios import buraya gelecek
+
 import axios from "axios";
 
 var benimIP;
@@ -29,7 +30,21 @@ async function ipAdresimiAl() {
 	NOT: Bilgisayarın IP adresini öğrenmek için: https://apis.ergineer.com/ipadresim 
 	ADIM 5'e gelene kadar fonksiyonunuzu test etmek için ip nizi URL'ye manuel olarak ekleyebilirsiniz.
 */
-
+//benimIP = "217.131.100.59";
+async function cardUret() {
+  await ipAdresimiAl();
+  const url = "https://apis.ergineer.com/ipgeoapi/" + benimIP;
+  axios
+    .get(url)
+    .then((response) => {
+      const component = infoCreator(response.data);
+      const cards = document.querySelector(".cards");
+      cards.append(component);
+    })
+    .catch((error) => {
+      console.log("hata" + error);
+    });
+}
 /*
 	ADIM 2: Geri döndürülen verileri inceleyin, bu sizin ip bilgileriniz! Bileşen fonksiyonunuzu geliştirmek içindeki bu veri yapısını
 	iyice anlamanız gerekmektedir.
@@ -53,6 +68,52 @@ async function ipAdresimiAl() {
     </div>
 */
 
+const infoCreator = (data) => {
+  const cardDiv = document.createElement("div");
+  cardDiv.className = "card";
+
+  const imgBayrak = document.createElement("img");
+  imgBayrak.src = `https://flagsapi.com/${data.ülkeKodu}/flat/64.png`;
+
+  const cardInfoDiv = document.createElement("div");
+  cardInfoDiv.className = "card-info";
+
+  const ip = document.createElement("h3");
+  ip.className = "ip";
+  ip.textContent = benimIP;
+
+  const ulke = document.createElement("p");
+  ulke.className = "ulke";
+  ulke.textContent = data.ülke + " (" + data.ülkeKodu + ")";
+
+  const enlemP = document.createElement("p");
+  enlemP.textContent = "Enlem:" + data.enlem + "Boylam:" + data.boylam;
+
+  const sehirP = document.createElement("p");
+  sehirP.textContent = "Şehir:" + data.şehir;
+
+  const saatP = document.createElement("p");
+  saatP.textContent = "Saat dilimi:" + data.saatdilimi;
+
+  const paraP = document.createElement("p");
+  paraP.textContent = "Para birimi:" + data.parabirimi;
+
+  const ispP = document.createElement("p");
+  ispP.textContent = "ISP:" + data.isp;
+
+  cardDiv.append(imgBayrak, cardInfoDiv);
+
+  cardInfoDiv.append(ip);
+  cardInfoDiv.append(ulke);
+  cardInfoDiv.append(enlemP);
+  cardInfoDiv.append(sehirP);
+  cardInfoDiv.append(saatP);
+  cardInfoDiv.append(paraP);
+  cardInfoDiv.append(ispP);
+
+  return cardDiv;
+};
+
 /*
 	ADIM 4: API'den alınan verileri kullanarak ADIM 3'te verilen yapıda bir kart oluşturun ve 
 	bu kartı DOM olarak .cards elementinin içine ekleyin. 
@@ -67,3 +128,4 @@ async function ipAdresimiAl() {
 */
 
 //kodlar buraya gelecek
+cardUret();
