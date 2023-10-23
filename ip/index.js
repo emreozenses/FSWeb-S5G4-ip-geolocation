@@ -31,8 +31,7 @@ async function ipAdresimiAl() {
 	ADIM 5'e gelene kadar fonksiyonunuzu test etmek için ip nizi URL'ye manuel olarak ekleyebilirsiniz.
 */
 //benimIP = "217.131.100.59";
-async function cardUret() {
-  await ipAdresimiAl();
+ipAdresimiAl().then(() => {
   const url = "https://apis.ergineer.com/ipgeoapi/" + benimIP;
   axios
     .get(url)
@@ -44,7 +43,7 @@ async function cardUret() {
     .catch((error) => {
       console.log("hata" + error);
     });
-}
+});
 /*
 	ADIM 2: Geri döndürülen verileri inceleyin, bu sizin ip bilgileriniz! Bileşen fonksiyonunuzu geliştirmek içindeki bu veri yapısını
 	iyice anlamanız gerekmektedir.
